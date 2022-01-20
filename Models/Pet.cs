@@ -37,20 +37,20 @@ namespace pet_hotel
     // We need this `JsonConverter` attribute
     // to convert our `type` string into an Enum
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public PetBreedType PetBreed { get; set; }
+    public PetBreedType breed { get; set; }
 
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public PetColorType PetColor { get; set; }
+    public PetColorType color { get; set; }
 
     // This is the Id of the pet owner who owns the pet
     // In a moment, we'll see how .NET can use this field to 
     // join our tables together for us
     [ForeignKey("PetOwners")]
-    public int petOwnerId { get; set; }
+    public int petOwnerid { get; set; }
 
     // While petOwnerId is an integer with the pet owner's ID,
     // this field is an actual pet owner object. 
-    public PetOwner ownedBy { get; set; }
+    public PetOwner petOwner { get; set; }
 
   }
 }
