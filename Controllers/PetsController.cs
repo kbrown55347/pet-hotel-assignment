@@ -59,6 +59,20 @@ namespace pet_hotel.Controllers
         .Include(pet => pet.petOwner);
     }
 
+    // GET /api/pets/:id
+    [HttpGet("{id}")]
+    public ActionResult<Pet> GetById(int id)
+    {
+      Pet pet = _context.Pets
+          .SingleOrDefault(pet => pet.id == id);
+      // Return a `404 Not Found` if the pet doesn't exist
+      if (pet is null)
+      {
+        return NotFound();
+      }
+      return pet;
+    }
+
     // POST /api/pets
     [HttpPost]
     public Pet Post(Pet pet)
@@ -71,18 +85,21 @@ namespace pet_hotel.Controllers
       return pet;
     }
 
-    // PUT /api/pets/:id
-    // Updates a pet by id
-    [HttpPut("{id}")]
-    public Pet Put(int id, Pet pet)
+    // PUT /api/pets/:id/checkin
+    // Updates a pet checkin time by id
+    [HttpPut("{id}/checkin")]
+    public Pet CheckinPut(int id)
     {
-      // Our DB context needs to know the id of the pet to update
-      pet.id = id;
-      // Tell the DB context about our updated pet object
+      //Fetch Object data by id
+      Pet pet = _context.Pets
+      .SingleOrDefault(pet => pet.id == id);
+      //Generate timestamp
+      DateTime date = DateTime.Now;
+      //update Object w/ timestamp
+      pet.checkedInAt = date;
+      //Update all that
       _context.Update(pet);
-      // ...and save the pet object to the database
       _context.SaveChanges();
-      // Respond back with the created pet object
       return pet;
     }
 
